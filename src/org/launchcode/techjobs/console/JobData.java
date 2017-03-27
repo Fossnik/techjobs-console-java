@@ -81,7 +81,6 @@ public class JobData {
                 jobs.add(row);
             }
         }
-
         return jobs;
     }
 
@@ -101,6 +100,8 @@ public class JobData {
                 }
             }
         }
+        if (matchingJobs.size() < 1)
+            System.out.println("\n - Query Does not Yield a Result! -");
         return matchingJobs;
     }
 
