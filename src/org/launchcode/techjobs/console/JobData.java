@@ -81,6 +81,8 @@ public class JobData {
                 jobs.add(row);
             }
         }
+        if (jobs.size() < 1)
+            System.out.println("\n - Query Does not Yield a Result! -");
         return jobs;
     }
 
