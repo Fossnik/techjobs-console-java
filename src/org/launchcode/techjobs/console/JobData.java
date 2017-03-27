@@ -20,6 +20,7 @@ public class JobData {
     private static Boolean isDataLoaded = false;
 
     private static ArrayList<HashMap<String, String>> allJobs;
+    private static String[] headers;
 
     /**
      * Fetch list of all values from loaded data,
@@ -76,12 +77,31 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
 
         return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+
+        ArrayList<HashMap<String, String>> matchingJobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            for (String header : headers) {
+                String aValue = row.get(header);
+                if (aValue.toLowerCase().contains(value.toLowerCase())) {
+                    matchingJobs.add(row);
+                    break;
+                }
+            }
+        }
+        return matchingJobs;
     }
 
     /**
@@ -101,7 +121,7 @@ public class JobData {
             CSVParser parser = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
             List<CSVRecord> records = parser.getRecords();
             Integer numberOfColumns = records.get(0).size();
-            String[] headers = parser.getHeaderMap().keySet().toArray(new String[numberOfColumns]);
+            headers = parser.getHeaderMap().keySet().toArray(new String[numberOfColumns]);
 
             allJobs = new ArrayList<>();
 
